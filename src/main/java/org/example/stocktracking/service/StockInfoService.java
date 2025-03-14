@@ -4,6 +4,7 @@ import org.example.stocktracking.Controller.KrxApiClient;
 import org.example.stocktracking.Dto.StockInfoDto;
 import org.example.stocktracking.Entity.StockInfo;
 import org.example.stocktracking.repository.StockInfoRepository;
+import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,13 @@ import java.util.List;
 public class StockInfoService {
     private final StockInfoRepository respository;
     private final KrxApiClient krxApiClient;
+    private final TradingDayChecker tradingDayChecker;
 
     @Autowired
-    public StockInfoService(StockInfoRepository respository, KrxApiClient krxApiClient) {
+    public StockInfoService(StockInfoRepository respository, KrxApiClient krxApiClient, TradingDayChecker tradingDayChecker) {
         this.respository = respository;
         this.krxApiClient = krxApiClient;
+        this.tradingDayChecker = tradingDayChecker;
     }
 
     public void fetchAndUpdateStockInfo() {
