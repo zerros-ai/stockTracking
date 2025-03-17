@@ -63,12 +63,19 @@ public class TradingDayChecker {
     }
 
     // ✅ 최종적으로 주말 또는 공휴일이면 `false`, 거래 가능일이면 `true` 반환
-    public boolean checkTradingDay() {
+    public String checkTradingDay() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        boolean isWeekend = !isYesterdayWeekend(yesterday);
-        boolean isHoliday = isHoliday(yesterday);
-
-        System.out.println("DEBUG: Yesterday = " + yesterday + ", Weekend = " + isWeekend + ", Holiday = " + isHoliday);
-        return !(isWeekend || isHoliday); // 주말 또는 공휴일이면 false, 아니면 true
+        while (true) {
+            boolean isWeekend = !isYesterdayWeekend(yesterday);
+            boolean isHoliday = isHoliday(yesterday);
+            // ✅ 주말도 아니고 공휴일도 아니면 거래 가능일
+            if (!isWeekend && !isHoliday) {
+                System.out.println("DEBUG: Trading day found = " + yesterday);
+                return yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+            // ✅ 주말 또는 공휴일이면 하루 전으로 이동
+            yesterday = yesterday.minusDays(1);
+        }
     }
+
 }

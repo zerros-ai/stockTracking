@@ -26,8 +26,8 @@ public class StockInfoService {
     }
 
     public void fetchAndUpdateStockInfo() {
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")); // YYYYMMDD 형식 변환
-        List<StockInfoDto> stockList = krxApiClient.fetchStockInfo("20250306");
+        String tradingDay = tradingDayChecker.checkTradingDay();
+        List<StockInfoDto> stockList = krxApiClient.fetchStockInfo(tradingDay);
 
         for(StockInfoDto stockInfoDto : stockList) {
             StockInfo stock = new StockInfo();

@@ -1,10 +1,11 @@
 package org.example.stocktracking.Entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name= "STOCK_INFO")
@@ -48,37 +49,37 @@ public class StockInfo {
     private Long listShrs;
 
 
-    @Column(name = "INS_DT")
-    private Instant insDt;
+    @Column(name = "INS_DT", updatable = false)
+    private LocalDateTime  insDt;
 
 
     @Column(name = "UPD_DT")
-    private Instant updDt;
+    private LocalDateTime  updDt;
 
     @PrePersist
     protected void onCreate() {
-        this.insDt = Instant.now();
-        this.updDt = Instant.now();
+        this.insDt = LocalDateTime.now(ZoneId.of("Asia/Seoul")); // ✅ KST 적용
+        this.updDt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updDt = Instant.now();
+        this.updDt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
-    public Instant getUpdDt() {
+    public LocalDateTime getUpdDt() {
         return updDt;
     }
 
-    public void setUpdDt(Instant updDt) {
+    public void setUpdDt(LocalDateTime updDt) {
         this.updDt = updDt;
     }
 
-    public Instant getInsDt() {
+    public LocalDateTime getInsDt() {
         return insDt;
     }
 
-    public void setInsDt(Instant insDt) {
+    public void setInsDt(LocalDateTime insDt) {
         this.insDt = insDt;
     }
 
