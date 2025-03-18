@@ -5,20 +5,18 @@ import org.example.stocktracking.Dto.StockInfoResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 
 @Service
-public class KrxApiClient {
-
+public class StockPriceApiClient {
     private final WebClient webClient;
 
-    private static final String BASE_URL = "http://data-dbg.krx.co.kr/svc/apis/sto/stk_isu_base_info";
+    private static final String BASE_URL = "http://data-dbg.krx.co.kr/svc/apis/sto/stk_bydd_trd";
     private static final String AUTH_KEY = "38559DCA153E4D78B24872A40A414B3CD58F462B"; // 본인의 AUTH_KEY
 
-    public KrxApiClient(WebClient.Builder webClientBuilder) {
+    public StockPriceApiClient(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
                 .baseUrl(BASE_URL)
                 .exchangeStrategies(ExchangeStrategies.builder()
@@ -27,7 +25,7 @@ public class KrxApiClient {
                 .build();
     }
 
-    public List<StockInfoDto> fetchStockInfo(String basDd) {
+    public List<StockInfoDto> fetchStockPrice(String basDd) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.queryParam("basDd", basDd).build())
                 .header("Authorization", AUTH_KEY)

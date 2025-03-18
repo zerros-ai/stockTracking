@@ -1,11 +1,12 @@
 package org.example.stocktracking.service;
 
-import org.example.stocktracking.Controller.KrxApiClient;
+import org.example.stocktracking.Controller.StockInfoApiClient;
 import org.example.stocktracking.Dto.StockInfoDto;
 import org.example.stocktracking.Entity.StockInfo;
 import org.example.stocktracking.repository.StockInfoRepository;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,19 +16,19 @@ import java.util.List;
 @Service
 public class StockInfoService {
     private final StockInfoRepository respository;
-    private final KrxApiClient krxApiClient;
+    private final StockInfoApiClient stockInfoApiClient;
     private final TradingDayChecker tradingDayChecker;
 
     @Autowired
-    public StockInfoService(StockInfoRepository respository, KrxApiClient krxApiClient, TradingDayChecker tradingDayChecker) {
+    public StockInfoService(StockInfoRepository respository, StockInfoApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker) {
         this.respository = respository;
-        this.krxApiClient = krxApiClient;
+        this.stockInfoApiClient = stockInfoApiClient;
         this.tradingDayChecker = tradingDayChecker;
     }
-
+    @Scheduled(cron = "0 0 9 * * MON-FRI")
     public void fetchAndUpdateStockInfo() {
         String tradingDay = tradingDayChecker.checkTradingDay();
-        List<StockInfoDto> stockList = krxApiClient.fetchStockInfo(tradingDay);
+        List<StockInfoDto> stockList = stockInfoApiClient.fetchStockInfo(tradingDay);
 
         for(StockInfoDto stockInfoDto : stockList) {
             StockInfo stock = new StockInfo();
