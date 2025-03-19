@@ -5,9 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "STOCK_PRICE")
@@ -25,22 +23,22 @@ public class StockPrice {
     private String sectTpNm;
 
     @Column(name = "TDD_CLSPRC", precision = 10, scale = 2)
-    private BigDecimal tddClsprc;
+    private String tddClsprc;
 
     @Column(name = "CMPPREVDD_PRC", precision = 10, scale = 2)
-    private BigDecimal cmpprevddPrc;
+    private String cmpprevddPrc;
 
     @Column(name = "FLUC_RT", precision = 6, scale = 2)
-    private BigDecimal flucRt;
+    private String flucRt;
 
     @Column(name = "TDD_OPNPRC", precision = 10, scale = 2)
-    private BigDecimal tddOpnprc;
+    private String tddOpnprc;
 
     @Column(name = "TDD_HGPRC", precision = 10, scale = 2)
-    private BigDecimal tddHgprc;
+    private String tddHgprc;
 
     @Column(name = "TDD_LWPRC", precision = 10, scale = 2)
-    private BigDecimal tddLwprc;
+    private String tddLwprc;
 
     @Column(name = "ACC_TRDVOL")
     private Long accTrdvol;
@@ -56,25 +54,25 @@ public class StockPrice {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "INS_DT")
-    private Instant insDt;
+    private LocalDateTime insDt;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "UPD_DT")
-    private Instant updDt;
+    private LocalDateTime updDt;
 
-    public Instant getUpdDt() {
+    public LocalDateTime getUpdDt() {
         return updDt;
     }
 
-    public void setUpdDt(Instant updDt) {
+    public void setUpdDt(LocalDateTime updDt) {
         this.updDt = updDt;
     }
 
-    public Instant getInsDt() {
+    public LocalDateTime getInsDt() {
         return insDt;
     }
 
-    public void setInsDt(Instant insDt) {
+    public void setInsDt(LocalDateTime insDt) {
         this.insDt = insDt;
     }
 
@@ -110,51 +108,51 @@ public class StockPrice {
         this.accTrdvol = accTrdvol;
     }
 
-    public BigDecimal getTddLwprc() {
+    public String getTddLwprc() {
         return tddLwprc;
     }
 
-    public void setTddLwprc(BigDecimal tddLwprc) {
+    public void setTddLwprc(String tddLwprc) {
         this.tddLwprc = tddLwprc;
     }
 
-    public BigDecimal getTddHgprc() {
+    public String getTddHgprc() {
         return tddHgprc;
     }
 
-    public void setTddHgprc(BigDecimal tddHgprc) {
+    public void setTddHgprc(String tddHgprc) {
         this.tddHgprc = tddHgprc;
     }
 
-    public BigDecimal getTddOpnprc() {
+    public String getTddOpnprc() {
         return tddOpnprc;
     }
 
-    public void setTddOpnprc(BigDecimal tddOpnprc) {
+    public void setTddOpnprc(String tddOpnprc) {
         this.tddOpnprc = tddOpnprc;
     }
 
-    public BigDecimal getFlucRt() {
+    public String getFlucRt() {
         return flucRt;
     }
 
-    public void setFlucRt(BigDecimal flucRt) {
+    public void setFlucRt(String flucRt) {
         this.flucRt = flucRt;
     }
 
-    public BigDecimal getCmpprevddPrc() {
+    public String getCmpprevddPrc() {
         return cmpprevddPrc;
     }
 
-    public void setCmpprevddPrc(BigDecimal cmpprevddPrc) {
+    public void setCmpprevddPrc(String cmpprevddPrc) {
         this.cmpprevddPrc = cmpprevddPrc;
     }
 
-    public BigDecimal getTddClsprc() {
+    public String getTddClsprc() {
         return tddClsprc;
     }
 
-    public void setTddClsprc(BigDecimal tddClsprc) {
+    public void setTddClsprc(String tddClsprc) {
         this.tddClsprc = tddClsprc;
     }
 

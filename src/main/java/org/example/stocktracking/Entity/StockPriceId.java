@@ -15,7 +15,7 @@ import java.util.Objects;
 public class StockPriceId implements java.io.Serializable {
     private static final long serialVersionUID = -2101093240113305454L;
     @Column(name = "BAS_DD", nullable = false)
-    private LocalDate basDd;
+    private String basDd;
 
     @Column(name = "ISU_CD", nullable = false, length = 12)
     private String isuCd;
@@ -34,4 +34,19 @@ public class StockPriceId implements java.io.Serializable {
         return Objects.hash(isuCd, basDd);
     }
 
+    public String getBasDd() {
+        return basDd;
+    }
+
+    public void setBasDd(String basDd) {
+        this.basDd = basDd;
+    }
+
+    public String getIsuCd() {
+        return isuCd;
+    }
+
+    public void setIsuCd(String isuCd) {
+        this.isuCd = isuCd;
+    }
 }
