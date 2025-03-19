@@ -30,3 +30,8 @@ spring:
 server:
   port: 8081
 
+stock:
+  api:
+    auth-keys:
+      krx: "38559DCA153E4D78B24872A40A414B3CD58F462B"
+      gonggong: "SW%2FbjwaSRIBzdda3Rd623GLCMgtSwOT%2Fp3S8FtTgvugaR63aYx5KbmYnMfRqZNYQkQG1J8aeNwRgg865WvDvNw%3D%3D"

@@ -13,11 +13,12 @@ import java.util.Set;
 public class TradingDayChecker {
 
     private static final String HOLIDAY_API_URL = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo";
-    private static final String SERVICE_KEY = "SW%2FbjwaSRIBzdda3Rd623GLCMgtSwOT%2Fp3S8FtTgvugaR63aYx5KbmYnMfRqZNYQkQG1J8aeNwRgg865WvDvNw%3D%3D"; // API 키 입력
     private final WebClient webClient;
+    private final StockApiProperties stockApiProperties;
 
-    public TradingDayChecker(WebClient.Builder webClientBuilder) {
+    public TradingDayChecker(WebClient.Builder webClientBuilder, StockApiProperties stockApiProperties) {
         this.webClient = webClientBuilder.baseUrl(HOLIDAY_API_URL).build();
+        this.stockApiProperties = stockApiProperties;
     }
 
     // ✅ 한국 공휴일 조회 API 호출하여 공휴일 리스트 반환
@@ -30,7 +31,7 @@ public class TradingDayChecker {
                             .queryParam("solMonth", String.format("%02d", month)) // 01, 02, ... 12 형식 유지
                             .queryParam("_type", "json")
                             .queryParam("numOfRows", "100")
-                            .queryParam("ServiceKey", SERVICE_KEY)
+                            .queryParam("ServiceKey", stockApiProperties.getAuthKey("gonggong"))
                             .build())
                     .retrieve()
                     .bodyToMono(String.class)
@@ -76,6 +77,13 @@ public class TradingDayChecker {
             // ✅ 주말 또는 공휴일이면 하루 전으로 이동
             yesterday = yesterday.minusDays(1);
         }
+    }
+
+    public boolean checkTradingDayForMigration(String tradingDay) {
+            boolean isWeekend = !isYesterdayWeekend(LocalDate.parse(tradingDay,DateTimeFormatter.ofPattern("yyyyMMdd")));
+            boolean isHoliday = isHoliday(LocalDate.parse(tradingDay,DateTimeFormatter.ofPattern("yyyyMMdd")));
+            // ✅ 주말도 아니고 공휴일도 아니면 거래 가능일
+        return !isWeekend && !isHoliday;
     }
 
 }

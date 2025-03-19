@@ -8,6 +8,8 @@ import org.example.stocktracking.repository.StockPriceRepository;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -47,5 +49,39 @@ public class StockPriceService {
             stock.setListShrs(stockPriceDto.getListShrs());
             stockPriceRepository.save(stock);
         }
+    }
+
+    public void fetchAndUpdateStockPriceForMigration(String tradingDay) {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate date = LocalDate.parse(tradingDay, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        while(date.isBefore(yesterday)) {
+            if(tradingDayChecker.checkTradingDayForMigration(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")))) {
+                List<StockPriceDto> stockPrice = stockPriceApiClient.fetchStockPrice(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                for (StockPriceDto stockPriceDto : stockPrice) {
+                    StockPrice stock = new StockPrice();
+                    StockPriceId stockPriceId = new StockPriceId();
+                    stockPriceId.setBasDd(stockPriceDto.getBasDd());
+                    stockPriceId.setIsuCd(stockPriceDto.getIsuCd());
+                    stock.setId(stockPriceId);
+                    stock.setIsuNm(stockPriceDto.getIsuNm());
+                    stock.setMktNm(stockPriceDto.getMktNm());
+                    stock.setSectTpNm(stockPriceDto.getSectTpNm());
+                    stock.setTddClsprc(stockPriceDto.getTddClsprc());
+                    stock.setCmpprevddPrc(stockPriceDto.getCmpprevddPrc());
+                    stock.setFlucRt(stockPriceDto.getFlucRt());
+                    stock.setTddOpnprc(stockPriceDto.getTddOpnprc());
+                    stock.setTddHgprc(stockPriceDto.getTddHgprc());
+                    stock.setTddLwprc(stockPriceDto.getTddLwprc());
+                    stock.setAccTrdval(stockPriceDto.getAccTrdval());
+                    stock.setAccTrdvol(stockPriceDto.getAccTrdvol());
+                    stock.setMktcap(stockPriceDto.getMktcap());
+                    stock.setListShrs(stockPriceDto.getListShrs());
+                    stockPriceRepository.save(stock);
+                }
+                date = date.plusDays(1);
+            }
+
+        }
+
     }
 }

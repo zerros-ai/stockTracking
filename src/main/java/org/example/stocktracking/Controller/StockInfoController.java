@@ -8,6 +8,7 @@ import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,8 +38,7 @@ public class StockInfoController {
     }
 
     @PostMapping("/test")
-    public String test() {
-        return tradingDayChecker.checkTradingDay();
-
+    public void test(@RequestParam String date) {
+        stockPriceService.fetchAndUpdateStockPriceForMigration(date);
     }
 }
