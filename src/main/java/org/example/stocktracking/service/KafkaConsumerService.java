@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumerService {
 
-    @KafkaListener(topics = "stockTracking")
+//    @KafkaListener(topics = "stockTracking")
     public void listen(ConsumerRecord<?, ?> record) {
         System.out.println(record.value());
     }
