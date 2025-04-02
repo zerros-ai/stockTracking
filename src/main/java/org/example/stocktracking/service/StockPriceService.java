@@ -1,11 +1,12 @@
 package org.example.stocktracking.service;
 
-import org.example.stocktracking.Controller.StockPriceApiClient;
+import org.example.stocktracking.client.StockPriceApiClient;
 import org.example.stocktracking.Dto.StockPriceDto;
 import org.example.stocktracking.Entity.StockPrice;
 import org.example.stocktracking.Entity.StockPriceId;
 import org.example.stocktracking.repository.StockPriceRepository;
 import org.example.stocktracking.util.TradingDayChecker;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public class StockPriceService {
         this.tradingDayChecker = tradingDayChecker;
         this.stockPriceApiClient = stockPriceApiClient;
     }
-
+    @Scheduled(cron = "0 0 10 * * MON-FRI")
     public void fetchAndUpdateStockPrice() {
         String tradingDay = tradingDayChecker.checkTradingDay();
         List<StockPriceDto> stockPrice = stockPriceApiClient.fetchStockPrice(tradingDay);

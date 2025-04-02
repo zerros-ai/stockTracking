@@ -1,6 +1,6 @@
 package org.example.stocktracking.service;
 
-import org.example.stocktracking.Controller.StockInfoApiClient;
+import org.example.stocktracking.client.StockInfoApiClient;
 import org.example.stocktracking.Dto.StockInfoDto;
 import org.example.stocktracking.Entity.StockInfo;
 import org.example.stocktracking.repository.StockInfoRepository;
