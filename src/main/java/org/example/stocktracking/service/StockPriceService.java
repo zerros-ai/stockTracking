@@ -4,7 +4,7 @@ import org.example.stocktracking.client.StockPriceApiClient;
 import org.example.stocktracking.Dto.StockPriceDto;
 import org.example.stocktracking.Entity.StockPrice;
 import org.example.stocktracking.Entity.StockPriceId;
-import org.example.stocktracking.repository.StockPriceRepository;
+import org.example.stocktracking.repository.jpa.StockPriceRepository;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -79,9 +79,8 @@ public class StockPriceService {
                     stock.setListShrs(stockPriceDto.getListShrs());
                     stockPriceRepository.save(stock);
                 }
-                date = date.plusDays(1);
             }
-
+            date = date.plusDays(1);
         }
 
     }

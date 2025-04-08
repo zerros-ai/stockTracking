@@ -7,10 +7,9 @@ import org.example.stocktracking.service.StockInfoService;
 import org.example.stocktracking.service.StockPriceService;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/stock-info")
@@ -49,5 +48,20 @@ public class StockInfoController {
     @PostMapping("/test")
     public void test(@RequestParam String date) {
         stockPriceService.fetchAndUpdateStockPriceForMigration(date);
+    }
+
+    @PostMapping("/kospiMigration")
+    public void kospiMigration(@RequestParam String date) {
+        kospiInfoService.fetchAndUpdateKospiInfoForMigration(date);
+    }
+
+    @GetMapping("/getStockInfoByName")
+    public List<StockInfo> getStockInfoByName(String name) {
+      return stockInfoService.getStckInfoByName(name);
+    }
+
+    @GetMapping("/getStockInfoByIsuCd")
+    public List<StockInfo> getStockInfoByCd(String isuCd) {
+        return stockInfoService.getStckInfoByName(isuCd);
     }
 }

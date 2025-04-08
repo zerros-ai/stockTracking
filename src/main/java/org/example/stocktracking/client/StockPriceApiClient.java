@@ -21,7 +21,7 @@ public class StockPriceApiClient {
         this.webClient = webClientBuilder
                 .baseUrl(BASE_URL)
                 .exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10*1024*1024))
+                        .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(100*1024*1024))
                         .build())
                 .build();
         this.stockApiProperties = stockApiProperties;

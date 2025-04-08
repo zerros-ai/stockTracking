@@ -1,15 +1,16 @@
 package org.example.stocktracking.service;
 
 import org.example.stocktracking.Dto.KospiInfoDto;
-import org.example.stocktracking.Dto.KospiInfoResponse;
 import org.example.stocktracking.Entity.KospiInfo;
 import org.example.stocktracking.Entity.KospiInfoId;
 import org.example.stocktracking.client.KospiInfoApiClient;
-import org.example.stocktracking.repository.KospiInfoRespository;
+import org.example.stocktracking.repository.jpa.KospiInfoRespository;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -23,12 +24,13 @@ public class KospiInfoService {
         this.tradingDayChecker = tradingDayChecker;
         this.kospiInfoApiClient = kospiInfoApiClient;
     }
-    @Scheduled(cron = "0 0 9 * * MON-FRI")
+
+    @Scheduled(cron = "0 0 10 * * MON-FRI")
     public void fetchAndUpdateKospiInfo() {
         String tradingDay = tradingDayChecker.checkTradingDay();
-        List<KospiInfoDto>  koipiInfo = kospiInfoApiClient.fetchKospiInfo(tradingDay);
+        List<KospiInfoDto> koipiInfo = kospiInfoApiClient.fetchKospiInfo(tradingDay);
 
-        for(KospiInfoDto kospiInfoDto : koipiInfo) {
+        for (KospiInfoDto kospiInfoDto : koipiInfo) {
             KospiInfo kospi = new KospiInfo();
             KospiInfoId kospiInfoId = new KospiInfoId();
             kospiInfoId.setBasDd(kospiInfoDto.getBasDd());
@@ -45,6 +47,35 @@ public class KospiInfoService {
             kospi.setAccTrdvol(kospiInfoDto.getAccTrdvol());
             kospi.setMktcap(kospiInfoDto.getMktcap());
             kospiInfoRespository.save(kospi);
+        }
+    }
+
+    public void fetchAndUpdateKospiInfoForMigration(String tradingDay) {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate date = LocalDate.parse(tradingDay, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        while (date.isBefore(yesterday)) {
+            if (tradingDayChecker.checkTradingDayForMigration(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")))) {
+                List<KospiInfoDto> koipiInfo = kospiInfoApiClient.fetchKospiInfo(date.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                for (KospiInfoDto kospiInfoDto : koipiInfo) {
+                    KospiInfo kospi = new KospiInfo();
+                    KospiInfoId kospiInfoId = new KospiInfoId();
+                    kospiInfoId.setBasDd(kospiInfoDto.getBasDd());
+                    kospiInfoId.setIdxClss(kospiInfoDto.getIdxClss());
+                    kospiInfoId.setIdxNm(kospiInfoDto.getIdxNm());
+                    kospi.setId(kospiInfoId);
+                    kospi.setClsprcIdx(kospiInfoDto.getClsprcIdx());
+                    kospi.setCmpprevddIdx(kospiInfoDto.getCmpprevddIdx());
+                    kospi.setFlucRt(kospiInfoDto.getFlucRt());
+                    kospi.setOpnprcIdx(kospiInfoDto.getOpnprcIdx());
+                    kospi.setHgprcIdx(kospiInfoDto.getHgprcIdx());
+                    kospi.setLwprcIdx(kospiInfoDto.getLwprcIdx());
+                    kospi.setAccTrdval(kospiInfoDto.getAccTrdval());
+                    kospi.setAccTrdvol(kospiInfoDto.getAccTrdvol());
+                    kospi.setMktcap(kospiInfoDto.getMktcap());
+                    kospiInfoRespository.save(kospi);
+                }
+            }
+            date = date.plusDays(1);
         }
     }
 }

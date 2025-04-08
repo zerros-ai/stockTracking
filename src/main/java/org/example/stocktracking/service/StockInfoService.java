@@ -3,7 +3,7 @@ package org.example.stocktracking.service;
 import org.example.stocktracking.client.StockInfoApiClient;
 import org.example.stocktracking.Dto.StockInfoDto;
 import org.example.stocktracking.Entity.StockInfo;
-import org.example.stocktracking.repository.StockInfoRepository;
+import org.example.stocktracking.repository.jpa.StockInfoRepository;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,7 +25,7 @@ public class StockInfoService {
         this.stockInfoApiClient = stockInfoApiClient;
         this.tradingDayChecker = tradingDayChecker;
     }
-    @Scheduled(cron = "0 0 9 * * MON-FRI")
+    @Scheduled(cron = "0 0 10 * * MON-FRI")
     public void fetchAndUpdateStockInfo() {
         String tradingDay = tradingDayChecker.checkTradingDay();
         List<StockInfoDto> stockList = stockInfoApiClient.fetchStockInfo(tradingDay);
@@ -58,6 +58,16 @@ public class StockInfoService {
 
             respository.save(stock);
         }
+    }
+
+    //종목명으로 리스트 가져오기
+    public List<StockInfo> getStckInfoByName(String stockName) {
+        return respository.findByIsuNmContaining(stockName);
+    }
+
+    //종목코드로 리스트 가져오기
+    public List<StockInfo> getStckInfoByIsuCd(String isuCd) {
+        return respository.findByIsuSrtCd(isuCd);
     }
 }
 

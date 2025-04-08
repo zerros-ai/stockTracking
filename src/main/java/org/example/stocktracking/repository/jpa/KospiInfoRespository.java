@@ -1,4 +1,4 @@
-package org.example.stocktracking.repository;
+package org.example.stocktracking.repository.jpa;
 
 import org.example.stocktracking.Entity.KospiInfo;
 import org.example.stocktracking.Entity.KospiInfoId;
