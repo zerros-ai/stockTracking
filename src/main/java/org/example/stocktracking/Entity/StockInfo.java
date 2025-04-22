@@ -178,4 +178,24 @@ public class StockInfo {
     public void setIsuCd(String isuCd) {
         this.isuCd = isuCd;
     }
+
+    @Override
+    public String toString() {
+        return "StockInfo{" +
+                "isuCd='" + isuCd + '\'' +
+                ", isuSrtCd='" + isuSrtCd + '\'' +
+                ", isuNm='" + isuNm + '\'' +
+                ", isuAbbrv='" + isuAbbrv + '\'' +
+                ", isuEngNm='" + isuEngNm + '\'' +
+                ", listDd=" + listDd +
+                ", mktTpNm='" + mktTpNm + '\'' +
+                ", secugrpNm='" + secugrpNm + '\'' +
+                ", sectTpNm='" + sectTpNm + '\'' +
+                ", kindStkcertTpNm='" + kindStkcertTpNm + '\'' +
+                ", parval='" + parval + '\'' +
+                ", listShrs=" + listShrs +
+                ", insDt=" + insDt +
+                ", updDt=" + updDt +
+                '}';
+    }
 }

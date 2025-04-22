@@ -12,8 +12,11 @@ public interface StockInfoRepository extends JpaRepository<StockInfo,String> {
 
     List<StockInfo> findAllBy();
 
-    //종목명으로 찾기
-    List<StockInfo> findByIsuNmContaining(String isuNm);
+    //종목명 및 종목 코드 로 like 찾기
+    List<StockInfo> findByIsuAbbrvContainingOrIsuCdContaining(String abbrv, String code);
+
+    //종목명 및 종목 코드 로 찾기
+    List<StockInfo> findByIsuAbbrvOrIsuCd(String abbrv, String code);
     //종목코드로 찾기
     List<StockInfo> findByIsuSrtCd(String isuSrt);
 

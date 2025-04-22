@@ -61,8 +61,8 @@ public class StockInfoService {
     }
 
     //종목명으로 리스트 가져오기
-    public List<StockInfo> getStckInfoByName(String stockName) {
-        return respository.findByIsuNmContaining(stockName);
+    public List<StockInfo> getStckInfoByName(String keyword) {
+        return respository.findByIsuAbbrvContainingOrIsuCdContaining(keyword, keyword);
     }
 
     //종목코드로 리스트 가져오기

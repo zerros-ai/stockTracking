@@ -5,6 +5,7 @@ import org.example.stocktracking.Dto.StockPriceDto;
 import org.example.stocktracking.Entity.StockPrice;
 import org.example.stocktracking.Entity.StockPriceId;
 import org.example.stocktracking.repository.jpa.StockPriceRepository;
+import org.example.stocktracking.repository.mybatis.StockPriceMapper;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,19 @@ public class StockPriceService {
     private final StockPriceRepository stockPriceRepository;
     private final TradingDayChecker tradingDayChecker;
     private final StockPriceApiClient stockPriceApiClient;
+    private final StockPriceMapper stockPriceMapper;
 
-    public StockPriceService(StockPriceRepository stockPriceRepository, StockPriceApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker, StockPriceApiClient stockPriceApiClient) {
+    public StockPriceService(StockPriceRepository stockPriceRepository, StockPriceApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker, StockPriceApiClient stockPriceApiClient, StockPriceMapper stockPriceMapper) {
         this.stockPriceRepository = stockPriceRepository;
         this.tradingDayChecker = tradingDayChecker;
         this.stockPriceApiClient = stockPriceApiClient;
+        this.stockPriceMapper = stockPriceMapper;
     }
+
+    public List<StockPrice> getStockPrices(String basDd, String isuCd) {
+       return stockPriceMapper.findByIsuCdAndDate(basDd, isuCd);
+    }
+
     @Scheduled(cron = "0 0 10 * * MON-FRI")
     public void fetchAndUpdateStockPrice() {
         String tradingDay = tradingDayChecker.checkTradingDay();
