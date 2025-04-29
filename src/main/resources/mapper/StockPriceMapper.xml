@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.example.stockTracking.repository.mybatis.StockPriceMapper">
-    <select id="findByIsuCdAndDate" resultType="StockPriceDto">
-        SELECT BAS_DD,TDD
+<mapper namespace="org.example.stocktracking.repository.mybatis.StockPriceMapper">
+    <select id="findByIsuCdAndDate" resultType="StockPrice">
+        SELECT BAS_DD,TDD_LWPRC,TDD_HGPRC,TDD_OPNPRC
           FROM STOCK_PRICE
          WHERE ISU_CD = #{isuCd}
            AND BAS_DD BETWEEN #{basDd} AND DATE_FORMAT(NOW(), '%Y%m%d')

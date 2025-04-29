@@ -1,5 +1,6 @@
 package org.example.stocktracking.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.stocktracking.client.StockPriceApiClient;
 import org.example.stocktracking.Dto.StockPriceDto;
 import org.example.stocktracking.Entity.StockPrice;
@@ -7,6 +8,8 @@ import org.example.stocktracking.Entity.StockPriceId;
 import org.example.stocktracking.repository.jpa.StockPriceRepository;
 import org.example.stocktracking.repository.mybatis.StockPriceMapper;
 import org.example.stocktracking.util.TradingDayChecker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +17,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Slf4j
 @Service
 public class StockPriceService {
     private final StockPriceRepository stockPriceRepository;
     private final TradingDayChecker tradingDayChecker;
     private final StockPriceApiClient stockPriceApiClient;
     private final StockPriceMapper stockPriceMapper;
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public StockPriceService(StockPriceRepository stockPriceRepository, StockPriceApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker, StockPriceApiClient stockPriceApiClient, StockPriceMapper stockPriceMapper) {
         this.stockPriceRepository = stockPriceRepository;
@@ -29,6 +34,7 @@ public class StockPriceService {
     }
 
     public List<StockPrice> getStockPrices(String basDd, String isuCd) {
+        logger.info("parameter-> "+basDd+" "+isuCd);
        return stockPriceMapper.findByIsuCdAndDate(basDd, isuCd);
     }
 

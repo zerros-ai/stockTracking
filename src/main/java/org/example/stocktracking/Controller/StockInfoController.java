@@ -69,8 +69,8 @@ public class StockInfoController {
     }
 
     @GetMapping("/getStockPriceByIsuSrtCd")
-    public List<StockPriceDto> getStockInfoByCd(@RequestParam("keyword") String isuSrtCd) {
-        return null;
-//        return stockInfoService.getStckInfoByName(isuSrtCd);
+    public List<StockPrice> getStockInfoByCd(@RequestParam("keyword") String isuSrtCd, @RequestParam("basDd") String basDd) {
+        logger.info("parameter-> "+basDd+" "+isuSrtCd);
+        return stockPriceService.getStockPrices(isuSrtCd,basDd);
     }
 }

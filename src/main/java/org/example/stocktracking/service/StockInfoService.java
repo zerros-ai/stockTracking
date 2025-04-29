@@ -1,9 +1,12 @@
 package org.example.stocktracking.service;
 
+import org.example.stocktracking.Dto.StockPriceDto;
+import org.example.stocktracking.Entity.StockPrice;
 import org.example.stocktracking.client.StockInfoApiClient;
 import org.example.stocktracking.Dto.StockInfoDto;
 import org.example.stocktracking.Entity.StockInfo;
 import org.example.stocktracking.repository.jpa.StockInfoRepository;
+import org.example.stocktracking.repository.mybatis.StockPriceMapper;
 import org.example.stocktracking.util.TradingDayChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,12 +21,14 @@ public class StockInfoService {
     private final StockInfoRepository respository;
     private final StockInfoApiClient stockInfoApiClient;
     private final TradingDayChecker tradingDayChecker;
+    private final StockPriceMapper stockPriceMapper;
 
     @Autowired
-    public StockInfoService(StockInfoRepository respository, StockInfoApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker) {
+    public StockInfoService(StockInfoRepository respository, StockInfoApiClient stockInfoApiClient, TradingDayChecker tradingDayChecker, StockPriceMapper stockPriceMapper) {
         this.respository = respository;
         this.stockInfoApiClient = stockInfoApiClient;
         this.tradingDayChecker = tradingDayChecker;
+        this.stockPriceMapper = stockPriceMapper;
     }
     @Scheduled(cron = "0 0 10 * * MON-FRI")
     public void fetchAndUpdateStockInfo() {
@@ -63,11 +68,6 @@ public class StockInfoService {
     //종목명으로 리스트 가져오기
     public List<StockInfo> getStckInfoByName(String keyword) {
         return respository.findByIsuAbbrvContainingOrIsuCdContaining(keyword, keyword);
-    }
-
-    //종목코드로 리스트 가져오기
-    public List<StockInfo> getStckInfoByIsuCd(String isuCd) {
-        return respository.findByIsuSrtCd(isuCd);
     }
 }
 
